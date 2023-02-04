@@ -20,6 +20,24 @@ router.delete('/list/:id', (req, res) => {
     });
 });
 
+//PUT to edit task
+router.put('/edit/:id', (req, res) => {
+  const queryText = `
+    UPDATE "list" 
+    SET 'task'= $2,'deadLine'=$3
+    WHERE id=$1;
+    `;
+  const queryParams = [req.params.id, req.body.task, req.body.deadline];
+  pool
+    .query(queryText, queryParams)
+    .then((dbRes) => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log('PUT /list/edit/:id failed', err);
+    });
+});
+
 //GET table from server
 router.get('/', (req, res) => {
   console.log('in /list GET');

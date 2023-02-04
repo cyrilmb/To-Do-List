@@ -97,7 +97,7 @@ function render(taskList) {
           <input class='task-in' value="${item.task}">
           </td>
           <td>
-          <input class='date-in' value="${item.date}" type="date">
+          <input class='date-in' value="${item.deadline}" type="date">
           </td>
           <td>
           ${compText}
@@ -116,7 +116,7 @@ function render(taskList) {
           ${item.task}
           </td>
           <td>
-          ${item.date}
+          ${item.deadline}
           </td>
           <td>
           ${compText}
