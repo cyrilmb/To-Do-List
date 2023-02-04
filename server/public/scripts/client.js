@@ -4,7 +4,43 @@ function onReady() {
   console.log(`in onReady`);
 
   $('#addBut').on('click', addTask);
+  $(document).on('click', '.edit-btn', onEdit);
 }
+
+//EDIT task
+let editId = -1;
+
+function onEdit() {
+  editId = $(this).parents('tr').data('id');
+  getList();
+}
+
+function cancelEdit() {
+  editId = -1;
+  getList();
+}
+
+//PUT ajax
+function acceptEdit() {
+  editId = -1;
+  let id = $(this).parents('tr').data('id');
+  let task = $('.taskInput').val();
+  let deadline = $('.dateInput').val();
+  $.ajax({
+    type: 'PUT',
+    url: `/list/edit/${id}`,
+    data: { task, deadline },
+  })
+    .then(function (response) {
+      console.log('Response from server.', response);
+      getList();
+    })
+    .catch(function (err) {
+      console.log('Error in PUT', err);
+      alert('Unable to edit task. Please try again later.');
+    });
+}
+//end EDIT task
 
 //POST ajax
 function addTask() {
