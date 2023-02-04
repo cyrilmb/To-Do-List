@@ -5,6 +5,7 @@ function onReady() {
 
   $('#addBut').on('click', addTask);
   $(document).on('click', '.edit-btn', onEdit);
+  $(document).on('click', '.delete-btn', deleteTask);
 }
 
 //EDIT task
@@ -76,6 +77,21 @@ function getList() {
     console.log(`in getList;`, response);
     render(response);
   });
+}
+
+function deleteTask() {
+  let id = $(this).parents('tr').data('id');
+  $.ajax({
+    method: 'DELETE',
+    url: `/list/${id}`,
+  })
+    .then((response) => {
+      console.log('Deleted task', id);
+      getList();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 //render

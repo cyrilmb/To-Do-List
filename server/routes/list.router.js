@@ -38,6 +38,25 @@ router.put('/edit/:id', (req, res) => {
     });
 });
 
+// DELETE
+router.delete('/:id', (req, res) => {
+  let query = `
+    DELETE FROM "list"
+    WHERE "id"=$1`;
+
+  let params = [req.params.id];
+
+  pool
+    .query(query, params)
+    .then((dbRes) => {
+      res.sendStatus(204);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
+
 //GET table from server
 router.get('/', (req, res) => {
   console.log('in /list GET');
