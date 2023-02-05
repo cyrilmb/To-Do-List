@@ -3,11 +3,14 @@ $(document).ready(onReady);
 function onReady() {
   console.log(`in onReady`);
 
+  getList();
+
   $('#addBut').on('click', addTask);
   $(document).on('click', '.edit-btn', onEdit);
   $(document).on('click', '.accept-btn', acceptEdit);
   $(document).on('click', '.cancel-btn', cancelEdit);
   $(document).on('click', '.delete-btn', deleteTask);
+  $(document).on('click', '.compBut', compTask);
 }
 
 //EDIT task
@@ -44,6 +47,27 @@ function acceptEdit() {
     });
 }
 //end EDIT task
+
+//Mark Complete
+function compTask() {
+  console.log('In compTask', $('.compBut'));
+
+  let id = $(this).parents('tr').data('id');
+  let isComplete = $(this).parents('tr').data('complete');
+  console.log('Task complete bool:', isComplete);
+
+  $.ajax({
+    type: 'PUT',
+    url: `list/${id}`,
+    data: { complete: !isComplete },
+  })
+    .then((response) => {
+      getList();
+    })
+    .catch((err) => {
+      console.log('compTask error', err);
+    });
+}
 
 //POST ajax
 function addTask() {
@@ -103,10 +127,9 @@ function render(taskList) {
 
   for (item of taskList) {
     let compText =
-      'Task Complete! <input class="compBut" type="button" value="Done!">';
+      'Task Complete! <input class="compBut" type="button" value="Ope, not done...">';
     if (!item.complete) {
-      compText =
-        'Tackle Me! <input class="compBut" type="button" value="Not done yet!">';
+      compText = '<input class="compBut" type="button" value="Mark Me Done!">';
     }
     if (item.id == editId) {
       let appendStr = `
