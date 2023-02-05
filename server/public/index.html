@@ -16,22 +16,40 @@
 
     <section>
         <input type="text" id="taskInput" placeholder="TASK TO DO">
-        <input type="date" id="dateInput" placeholder="DUE DATE">
+        <input type="datetime-local" id="dateInput" placeholder="DUE DATE">
         <button id="addBut">ADD IT TO THE LIST</button>
     </section>
 
     <section>
-        <h2>Task List</h2>
+        <h2>To Do List</h2>
         <table>
           <thead>
             <tr>
               <th>Task</th>
               <th>Due Date</th>
               <th>Did You Do It?</th>
+              <th>Edit Task</th>
               <th>Remove Task</th>
             </tr>
           </thead>
-          <tbody id="viewTasks">
+          <tbody class="taskLists" id="toDoTasks">
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Complete List</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Due Date</th>
+              <th>Did You Do It?</th>
+              <th>Edit Task</th>
+              <th>Remove Task</th>
+            </tr>
+          </thead>
+          <tbody class="taskLists" id="completeTasks">
           </tbody>
         </table>
       </section>
