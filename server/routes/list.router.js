@@ -6,10 +6,11 @@ const pool = require('../modules/pool');
 router.put('/edit/:id', (req, res) => {
   const queryText = `
     UPDATE "list"
-    SET 'task'= $2,'deadLine'=$3
+    SET task=$2,deadline=$3
     WHERE id=$1;
     `;
   const queryParams = [req.params.id, req.body.task, req.body.deadline];
+  console.log('put edit queryParams', req.body);
   pool
     .query(queryText, queryParams)
     .then((dbRes) => {

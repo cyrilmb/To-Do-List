@@ -26,12 +26,14 @@ function cancelEdit() {
   getList();
 }
 
-//PUT ajax
+//PUT edit
 function acceptEdit() {
+  console.log($('.date-in').val());
   editId = -1;
   let id = $(this).parents('tr').data('id');
-  let task = $('.taskInput').val();
-  let deadline = $('.dateInput').val();
+  let task = $('.task-in').val();
+  let deadline = new Date($('.date-in').val()).toISOString().split('T')[0];
+
   $.ajax({
     type: 'PUT',
     url: `/list/edit/${id}`,
@@ -69,7 +71,7 @@ function compTask() {
     });
 }
 
-//POST ajax
+//POST
 function addTask() {
   let newDate = $('#dateInput').val();
   let taskObj = {
@@ -131,6 +133,10 @@ function render(taskList) {
       'Task Complete! <input id="compButDone" class="compBut" type="button" value="Ope, not done...">';
     let compId = 'done';
     let listId = completeTasks;
+    let dateStr = new Date(item.deadline).toLocaleString('en', {
+      dateStyle: 'medium',
+    });
+    let isoStr = new Date(item.deadline).toISOString().split('T')[0];
     if (!item.complete) {
       compText =
         'Get it done!<input id="compButUndone" class="compBut" type="button" value="Mark Me Done!">';
@@ -144,7 +150,7 @@ function render(taskList) {
           <input class='task-in' value="${item.task}">
           </td>
           <td>
-          <input class='date-in' value="${item.deadline}" type="date">
+          <input class='date-in' value="${isoStr}" type="date">
           </td>
           <td>
           ${compText}
@@ -166,7 +172,7 @@ function render(taskList) {
           ${item.task}
           </td>
           <td>
-          ${item.deadline}
+          ${dateStr}
           </td>
           <td>
           ${compText}
