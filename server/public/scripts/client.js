@@ -5,6 +5,8 @@ function onReady() {
 
   $('#addBut').on('click', addTask);
   $(document).on('click', '.edit-btn', onEdit);
+  $(document).on('click', '.accept-btn', acceptEdit);
+  $(document).on('click', '.cancel-btn', cancelEdit);
   $(document).on('click', '.delete-btn', deleteTask);
 }
 
