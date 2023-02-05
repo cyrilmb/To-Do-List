@@ -2,20 +2,39 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
 
-//DELETE
-router.delete('/list/:id', (req, res) => {
-  console.log('in /list DELETE', req.params.id);
+//PUT to edit task
+router.put('/edit/:id', (req, res) => {
+  const queryText = `
+    UPDATE "list"
+    SET 'task'= $2,'deadLine'=$3
+    WHERE id=$1;
+    `;
+  const queryParams = [req.params.id, req.body.task, req.body.deadline];
+  pool
+    .query(queryText, queryParams)
+    .then((dbRes) => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log('PUT /list/edit/:id failed', err);
+    });
+});
 
-  const queryText = `DELETE FROM "list" WHERE 'id'=$1;`;
+// DELETE
+router.delete('/:id', (req, res) => {
+  const queryText = `
+    DELETE FROM "list"
+    WHERE "id"=$1`;
+
   const queryParams = [req.params.id];
 
   pool
     .query(queryText, queryParams)
-    .then((response) => {
-      res.sendStatus(200);
+    .then((dbRes) => {
+      res.sendStatus(204);
     })
     .catch((err) => {
-      console.log('error in DELETE', err);
+      console.log(err);
       res.sendStatus(500);
     });
 });
@@ -24,12 +43,12 @@ router.delete('/list/:id', (req, res) => {
 router.get('/', (req, res) => {
   console.log('in /list GET');
 
-  const queryText = `SELECT * from "list" ORDER BY 'id';`;
+  const queryText = `SELECT * from "list";`;
 
   pool
     .query(queryText)
     .then((results) => {
-      resizeBy.send(results.rows);
+      res.send(results.rows);
     })
     .catch((err) => {
       console.log('Error in /list GET', err);
@@ -38,11 +57,11 @@ router.get('/', (req, res) => {
 });
 
 //POST
-router.post('/list/', (req, res) => {
+router.post('/', (req, res) => {
   console.log('in /list POST:', req.body);
 
   const queryText = `
-    INSERT INTO "list" ("task", "deadline", "complete") 
+    INSERT INTO list ("task", "deadline", "complete") 
     VALUES ($1, $2, $3);
   `;
   const queryParams = [req.body.task, req.body.deadline, req.body.complete];
