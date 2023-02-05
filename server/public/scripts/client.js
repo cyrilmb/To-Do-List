@@ -9,7 +9,7 @@ function onReady() {
   $(document).on('click', '.edit-btn', onEdit);
   $(document).on('click', '.accept-btn', acceptEdit);
   $(document).on('click', '.cancel-btn', cancelEdit);
-  $(document).on('click', '.delete-btn', deleteTask);
+  $(document).on('click', '.delete-btn', checkDelete);
   $(document).on('click', '.compBut', compTask);
 }
 
@@ -108,8 +108,28 @@ function getList() {
   });
 }
 
-function deleteTask() {
+//DELETE
+function checkDelete() {
   let id = $(this).parents('tr').data('id');
+  swal({
+    title: 'Are you sure?',
+    text: 'Once deleted, this task will be gone.',
+    icon: 'warning',
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete) => {
+    if (willDelete) {
+      swal('Your task is gone!', {
+        icon: 'success',
+      });
+      deleteTask(id);
+    } else {
+      swal('Your task is still with us!');
+    }
+  });
+}
+
+function deleteTask(id) {
   $.ajax({
     method: 'DELETE',
     url: `/list/${id}`,
