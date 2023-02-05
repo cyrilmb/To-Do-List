@@ -17,6 +17,26 @@ router.put('/edit/:id', (req, res) => {
     })
     .catch((err) => {
       console.log('PUT /list/edit/:id failed', err);
+      res.sendStatus(500);
+    });
+});
+
+//PUT to mark complete
+router.put('/:id', (req, res) => {
+  const queryText = `
+  UPDATE "list" 
+  SET "complete"= $1
+  WHERE id=$2;
+  `;
+  const queryParams = [req.body.complete, req.params.id];
+  pool
+    .query(queryText, queryParams)
+    .then((dbRes) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log('PUT complete error', error);
+      res.sendStatus(500);
     });
 });
 

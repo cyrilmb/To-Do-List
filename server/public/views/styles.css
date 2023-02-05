@@ -1,3 +1,23 @@
 h1 {
     color: violet;
 }
+
+body {
+    background-color: rgb(142, 184, 184);
+}
+
+#compButDone {
+    border: solid green 3px;
+}
+
+#compButUndone {
+    border: solid red 3px;
+}
+
+#done {
+    background-color: greenyellow;
+}
+
+#notDone {
+    background-color: rgb(247, 105, 105);
+}

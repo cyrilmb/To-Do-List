@@ -3,11 +3,14 @@ $(document).ready(onReady);
 function onReady() {
   console.log(`in onReady`);
 
+  getList();
+
   $('#addBut').on('click', addTask);
   $(document).on('click', '.edit-btn', onEdit);
   $(document).on('click', '.accept-btn', acceptEdit);
   $(document).on('click', '.cancel-btn', cancelEdit);
   $(document).on('click', '.delete-btn', deleteTask);
+  $(document).on('click', '.compBut', compTask);
 }
 
 //EDIT task
@@ -45,11 +48,33 @@ function acceptEdit() {
 }
 //end EDIT task
 
+//Mark Complete
+function compTask() {
+  console.log('In compTask', $('.compBut'));
+
+  let id = $(this).parents('tr').data('id');
+  let isComplete = $(this).parents('tr').data('complete');
+  console.log('Task complete bool:', isComplete);
+
+  $.ajax({
+    type: 'PUT',
+    url: `list/${id}`,
+    data: { complete: !isComplete },
+  })
+    .then((response) => {
+      getList();
+    })
+    .catch((err) => {
+      console.log('compTask error', err);
+    });
+}
+
 //POST ajax
 function addTask() {
+  let newDate = $('#dateInput').val();
   let taskObj = {
     task: $('#taskInput').val(),
-    deadline: $('#dateInput').val(),
+    deadline: newDate,
     complete: false,
   };
   console.log('in addTask', taskObj);
@@ -98,19 +123,23 @@ function deleteTask() {
 
 //render
 function render(taskList) {
-  let renderElement = $(`#viewTasks`);
+  let renderElement = $(`.taskLists`);
   renderElement.empty();
 
   for (item of taskList) {
     let compText =
-      'Task Complete! <input class="compBut" type="button" value="Done!">';
+      'Task Complete! <input id="compButDone" class="compBut" type="button" value="Ope, not done...">';
+    let compId = 'done';
+    let listId = completeTasks;
     if (!item.complete) {
       compText =
-        'Tackle Me! <input class="compBut" type="button" value="Not done yet!">';
+        'Get it done!<input id="compButUndone" class="compBut" type="button" value="Mark Me Done!">';
+      compId = 'notDone';
+      listId = toDoTasks;
     }
     if (item.id == editId) {
       let appendStr = `
-          <tr data-id=${item.id} data-complete="${item.complete}">
+          <tr  id="${compId}" data-id=${item.id} data-complete="${item.complete}">
           <td>
           <input class='task-in' value="${item.task}">
           </td>
@@ -122,14 +151,17 @@ function render(taskList) {
           </td>
           <td>
           <span>
-          <input class='accept-btn' type='button' value='Enter Me!'>
-          <input class='cancel-btn' type='button' value='cancel'>
+          <input class='accept-btn' type='button' value='Enter Edit'>
+          <input class='cancel-btn' type='button' value='Cancel Edit'>
           </span>
+          </td>
+          <td>
+          <input class='delete-btn' type='button' value='Remove Task'>
           </td>`;
-      renderElement.append(appendStr);
+      $(listId).append(appendStr);
     } else {
       let appendStr = `
-          <tr data-id=${item.id} data-complete=${item.complete}>
+          <tr  id="${compId}" data-id=${item.id} data-complete=${item.complete}>
           <td>
           ${item.task}
           </td>
@@ -140,12 +172,12 @@ function render(taskList) {
           ${compText}
           </td>
           <td>
-          <span>
           <input class='edit-btn' type='button' value='Edit Task'>
+          </td>
+          <td>
           <input class='delete-btn' type='button' value='Remove Task'>
-          </span>
           </td>`;
-      renderElement.append(appendStr);
+      $(listId).append(appendStr);
     }
   }
 }
