@@ -64,7 +64,7 @@ router.delete('/:id', (req, res) => {
 router.get('/', (req, res) => {
   console.log('in /list GET');
 
-  const queryText = `SELECT * from "list";`;
+  const queryText = `SELECT * from "list" ORDER by deadline ASC;`;
 
   pool
     .query(queryText)

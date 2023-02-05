@@ -15,14 +15,28 @@
     </header>
 
     <section>
-        <input type="text" id="taskInput" placeholder="TASK TO DO">
-        <input type="datetime-local" id="dateInput" placeholder="DUE DATE">
-        <button id="addBut">ADD IT TO THE LIST</button>
+      <h2>Enter A New Task</h2>
+      <table>
+      <thead>
+        <tr>
+          <th>What Do You Have To Do?</th>
+          <th>When is the Deadline?</th>
+          <!-- <th>Click to Enter!</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td><input type="text" id="taskInput" placeholder="Task"></td>
+        <td><input type="datetime-local" id="dateInput"></td>
+        <td><button id="addBut">ADD IT!</button></td>
+        </tr>
+      </tbody>
+    </table>
     </section>
 
     <section>
-        <h2>To Do List</h2>
-        <table>
+        <h2 class="centerHead">To Do List</h2>
+        <table class="centerTable">
           <thead>
             <tr>
               <th>Task</th>
@@ -38,8 +52,8 @@
       </section>
 
       <section>
-        <h2>Complete List</h2>
-        <table>
+        <h2 class="centerHead">Complete List</h2>
+        <table class="centerTable">
           <thead>
             <tr>
               <th>Task</th>
