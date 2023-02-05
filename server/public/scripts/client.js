@@ -92,7 +92,7 @@ function addTask() {
       getList();
     })
     .catch((err) => {
-      alert('Cannot add task right now', err);
+      alert('Please check that you have entered a task and a deadline.', err);
     });
 }
 
