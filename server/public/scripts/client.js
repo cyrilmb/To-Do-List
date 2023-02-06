@@ -56,12 +56,13 @@ function compTask() {
 
   let id = $(this).parents('tr').data('id');
   let isComplete = $(this).parents('tr').data('complete');
+  let compTime = new Date().toISOString().split('T')[0];
   console.log('Task complete bool:', isComplete);
-
+  console.log(compTime);
   $.ajax({
     type: 'PUT',
     url: `list/${id}`,
-    data: { complete: !isComplete },
+    data: { complete: !isComplete, comptime: compTime },
   })
     .then((response) => {
       getList();
@@ -149,8 +150,9 @@ function render(taskList) {
   renderElement.empty();
 
   for (item of taskList) {
-    let compText =
-      'Task Complete! <input id="compButDone" class="compBut" type="button" value="Ope, not done...">';
+    let timeComp = item.comptime;
+    console.log(item.comptime);
+    let compText = `Task Complete at "${timeComp}"! <input id="compButDone" class="compBut" type="button" value="Ope, not done...">`;
     let compId = 'done';
     let listId = completeTasks;
     let dateStr = new Date(item.deadline).toLocaleString('en', {
@@ -159,7 +161,7 @@ function render(taskList) {
     let isoStr = new Date(item.deadline).toISOString().split('T')[0];
     if (!item.complete) {
       compText =
-        'Get it done!<input id="compButUndone" class="compBut" type="button" value="Mark Me Done!">';
+        '<input id="compButUndone" class="compBut" type="button" value="Mark Me Done!">';
       compId = 'notDone';
       listId = toDoTasks;
     }

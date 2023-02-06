@@ -26,10 +26,10 @@ router.put('/edit/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   const queryText = `
   UPDATE "list" 
-  SET "complete"= $1
-  WHERE id=$2;
+  SET "complete"=$1, "comptime"=$2
+  WHERE id=$3;
   `;
-  const queryParams = [req.body.complete, req.params.id];
+  const queryParams = [req.body.complete, req.body.comptime, req.params.id];
   pool
     .query(queryText, queryParams)
     .then((dbRes) => {
@@ -82,10 +82,15 @@ router.post('/', (req, res) => {
   console.log('in /list POST:', req.body);
 
   const queryText = `
-    INSERT INTO list ("task", "deadline", "complete") 
-    VALUES ($1, $2, $3);
+    INSERT INTO list ("task", "deadline", "complete", "comptime") 
+    VALUES ($1, $2, $3, $4);
   `;
-  const queryParams = [req.body.task, req.body.deadline, req.body.complete];
+  const queryParams = [
+    req.body.task,
+    req.body.deadline,
+    req.body.complete,
+    req.body.comptime,
+  ];
 
   pool
     .query(queryText, queryParams)
