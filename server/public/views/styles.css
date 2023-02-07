@@ -38,6 +38,7 @@ h2 {
 
 td, th {
     border: solid 2px rgb(57, 0, 57);
+    border-collapse: collapse;
 }
 
 th {
