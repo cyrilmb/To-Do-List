@@ -6,7 +6,7 @@ Our weekend challenge was to create a full stack application using SQL and node.
 
 ## Screen Shots
 
-![Screen shot of to do list](./images/screenShot1.png)
+![Screen shot of to do list](./images/screenShot.png)
 
 ## Install
 
